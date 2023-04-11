@@ -1,0 +1,25 @@
+---
+
+namespace: k8s-cleanup
+
+serviceAccountName: k8s-cleanup-user
+clusterRoleName: k8s-cluster-role
+clusterRoleBinding: k8s-cleanup-clusterrolebinding
+
+
+image:
+  repository: lazsa/techstack_cleanup:v3
+  pullPolicy: Always
+
+# Runs every 6 hours
+schedule: '0 */6 * * *'
+
+failedJobsHistoryLimit: 6
+successfulJobsHistoryLimit: 6
+
+
+excludeNamespaces: "default,ingress-nginx,kube-node-lease,kube-public,kube-system"
+
+maxDays: 3
+
+podStatus: "Running, Succeeded, Failed, ContainerCreating, Error, CrashLoopBackOff"

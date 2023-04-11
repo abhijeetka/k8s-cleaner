@@ -1,0 +1,28 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-cron
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: k8s-clean-jobs
+spec:
+  schedule: "{{ .Values.schedule }}"
+  failedJobsHistoryLimit: {{ .Values.failedJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ .Values.serviceAccountName }}
+          restartPolicy: OnFailure
+          containers:
+          - name: {{ .Release.Name }}
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            image: {{ .Values.image.repository }}
+            env:
+              - name: EXCLUDE_NAMESPACES
+                value: {{ .Values.excludeNamespaces }}
+              - name: MAX_DAYS
+                value: "{{ .Values.maxDays }}"
+              - name: POD_STATUS
+                value: {{ .Values.podStatus }}
