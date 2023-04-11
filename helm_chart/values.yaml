@@ -8,7 +8,7 @@ clusterRoleBinding: k8s-cleanup-clusterrolebinding
 
 
 image:
-  repository: lazsa/techstack_cleanup:v3
+  repository: abhijeetka/k8s-cleaner:v3
   pullPolicy: Always
 
 # Runs every 6 hours
